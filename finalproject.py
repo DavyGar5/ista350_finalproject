@@ -21,13 +21,15 @@ def page(url):
     '''
     Gets the webpage using the URL.
     '''
-    r = requests.get(url)
+    headers = {"User-Agent": "Mozilla/5.0"}
+    r = requests.get(url, headers=headers)
     return r.text
 
 def soup_stuff(html, url):
     '''
     Uses BST to download the baby_names_data.zip file and extract into the project folder.
     '''
+    
     soup = BeautifulSoup(html, "html.parser")
     print(soup)
 
@@ -37,7 +39,7 @@ def soup_stuff(html, url):
             zip = urljoin(url, href)
             break
 
-    r = requests.get(zip)
+    r = requests.get(zip, headers={"User-Agent": "Mozilla/5.0"})
     with zipfile.ZipFile(io.BytesIO(r.content)) as z:
         z.extractall("baby_names_data")
 
@@ -140,13 +142,13 @@ def plot3():
 
     
 def main():
-    # url = "https://www.ssa.gov/oact/babynames/limits.html"
-    # html = page(url)
-    # soup_stuff(html,url)
+    url = "https://www.ssa.gov/oact/babynames/limits.html"
+    html = page(url)
+    soup_stuff(html,url)
 
-    plot1()
-    plot2()
-    plot3()
+    # plot1()
+    # plot2()
+    # plot3()
 
 if __name__ == '__main__':
     main()
